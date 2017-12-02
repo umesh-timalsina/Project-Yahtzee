@@ -290,6 +290,15 @@ public class GamePlay {
         return this.players.isIncompleteCycle();
     }// end hasMorePlayersToPlay
     
+    public Player findWinner(){
+        Player winner = this.players.getNext();
+        while(this.players.isIncompleteCycle()){
+            Player temp = this.players.getNext();
+            if(winner.getScore() < temp.getScore())
+                winner = temp;
+        }// end while
+        return winner;
+    }// end findWinner
     
     
 }// end Class Round

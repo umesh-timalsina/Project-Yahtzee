@@ -9,22 +9,16 @@ import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import models.GamePlay;
+import models.Player;
 import views.MainView;
 
-/**
- *
- * @author tumesh
- */
 public class MainController {
     MainView mainView;
-    GamePlay newRound;
-    
-    
-    
+    GamePlay gamePlay;
     
     public MainController(MainView v, GamePlay r){
         mainView = v;
-        newRound = r;
+        gamePlay = r;
     }// end constructor
     
     public void initController() {
@@ -54,21 +48,20 @@ public class MainController {
         // To Do : Add Player Logic Here
         Integer numPlayers;
         numPlayers = (Integer) this.mainView.getNumOfPlayers().getSelectedItem();
-        this.newRound.setPlayers(numPlayers);
-        System.out.println("Control Reaches Here");
+        this.gamePlay.setPlayers(numPlayers);
         this.mainView.getSelectNumberOfPlayersBtn().setEnabled(false);
         this.runRound();
         
     }// end start Game
     
     private void showRollDicesResult(JButton t){
-        if(!this.newRound.moreRollsPossible()) t.setEnabled(false);
+        if(!this.gamePlay.moreRollsPossible()) t.setEnabled(false);
         this.mainView.getChooseChoicesButton().setEnabled(true);
-        this.newRound.rollDices();
+        this.gamePlay.rollDices();
         this.mainView.getResultDisplayArea().setText
-                                    (this.newRound.getDiceRollResult());
+                                    (this.gamePlay.getDiceRollResult());
        this.mainView.getChoicesScoringComboBox().removeAllItems();
-       Object [] choices = this.newRound.analyzeResults().toArray();
+       Object [] choices = this.gamePlay.analyzeResults().toArray();
        for(Object anElement : choices){
            this.mainView.getChoicesScoringComboBox().addItem(anElement);
        }// end for
@@ -78,37 +71,39 @@ public class MainController {
     }// end showRollDicesResult
     
     private void scoreAndShowResults(JButton t){
-        this.newRound.getPlayer().getChoicesScored().add(
+        this.gamePlay.getPlayer().getChoicesScored().add(
                                 this.mainView.getChoicesScoringComboBox()
                                         .getSelectedItem().toString());
-        this.newRound.scoreRound(this.mainView.getChoicesScoringComboBox().
+        this.gamePlay.scoreRound(this.mainView.getChoicesScoringComboBox().
                                     getSelectedItem().toString());
         
-        this.mainView.getRoundScoreLabel().setText(
-            "Round Score : " + this.newRound.getPlayer().getRoundScore().get(
-             this.newRound.getPlayer().getRoundNumber()));
+        this.mainView.getRoundScoreLabel().setText("Round Score : " + this.gamePlay.getPlayer().getRoundScore().get(this.gamePlay.getPlayer().getRoundNumber()));
         
         this.mainView.getChooseChoicesButton().setEnabled(false);
         
-        this.newRound.getPlayer().setScore();
+        this.gamePlay.getPlayer().setScore();
         
-        this.mainView.getTotalScoreLabel().setText(
-            "Total Score: " + this.newRound.getPlayer().getScore()
+        this.mainView.getTotalScoreLabel().setText("Total Score: " + this.gamePlay.getPlayer().getScore()
             );
         this.mainView.getRollDiceBtn().setEnabled(false);
 //        this.newRound.getPlayer().incrementRoundNumber();
-        if(this.newRound.getPlayer().hasMoreRoundsToPlay() || 
-                this.newRound.hasMorePlayersToPlay()){
-            this.newRound.changePlayer();
+        if(this.gamePlay.getPlayer().hasMoreRoundsToPlay() || 
+                this.gamePlay.hasMorePlayersToPlay()){
+            this.gamePlay.changePlayer();
             this.runRound();
         } // end if
- 
-            
+        else{
+            Player winner = this.gamePlay.findWinner();
+            String winningStatement = winner.getPlayerID() +" Wins the game "
+                                    + " with " + winner.getScore() + " Points.";
+            MainView.infoBox(winningStatement, "Game Over");
+            System.exit(0);
+        }// end else
     }// end scoreAndShowResults
     
     private void runRound(){
-        this.newRound.getPlayer().incrementRoundNumber();
-        this.newRound.setNumberOfRolls(1);
+        this.gamePlay.getPlayer().incrementRoundNumber();
+        this.gamePlay.setNumberOfRolls(1);
         
         // Disable the round score button at first
         this.mainView.getChooseChoicesButton().setEnabled(false);
@@ -118,10 +113,10 @@ public class MainController {
         
         // Display the player information on the gameBoard
         JLabel playerLabel = this.mainView.getPlayerLabel();
-        playerLabel.setText(this.newRound.getPlayerID());
+        playerLabel.setText(this.gamePlay.getPlayerID());
         
         // Display the round information on the gameBoard
         JLabel roundLabel = this.mainView.getRoundLabel();
-        roundLabel.setText(this.newRound.getRoundID());
+        roundLabel.setText(this.gamePlay.getRoundID());
     }
 }

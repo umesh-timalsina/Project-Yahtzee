@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 
 /**
  *
@@ -187,5 +186,11 @@ public class MainView {
 
     public JButton getSelectNumberOfPlayersBtn() {
         return selectNumberOfPlayersBtn;
+    }
+    
+    public static void infoBox(String infoMessage, String titleBar)
+    {
+        JOptionPane.showMessageDialog(null, infoMessage, "InfoBox: " + titleBar,
+                                    JOptionPane.INFORMATION_MESSAGE);
     }
 }// end main class
