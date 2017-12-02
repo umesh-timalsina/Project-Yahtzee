@@ -20,7 +20,7 @@ public class Player {
     private int score;
     private HashSet<String> choicesScored;
     private int roundNumber;
-    private static final int MAX_ROUNDS = 13; 
+    static final int MAX_ROUNDS = 2; 
     private Integer [] results;
     private String player_id;
     private int yahtzeeCount;
@@ -120,7 +120,7 @@ public class Player {
     
     public void setRoundScore(int roundScore){
         this.roundScores.put(this.roundNumber, roundScore);
-        System.out.println(this.choicesScored.size());
+        //System.out.println(this.choicesScored.size());
     }
     
     public HashMap<Integer, Integer> getRoundScore(){
@@ -137,7 +137,7 @@ public class Player {
     
     public boolean hasMoreRoundsToPlay(){
         return this.roundNumber < MAX_ROUNDS;
-    }
+    }// end has More Rounds to play
     
     public HashMap<String, Boolean> getChoicesAlreadyScored(){
         return (HashMap)this.choicesAlreadyScored;

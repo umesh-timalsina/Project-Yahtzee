@@ -33,11 +33,10 @@ public class MainView {
     private JLabel numberOfPlayersSelectionLabel;
     private JButton selectNumberOfPlayersBtn;
     
-    
-    
     public MainView(){
         prepareGUI();
     }
+    
     private void prepareGUI() {
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().
                 getDefaultScreenDevice();   // Graphics Device GD
@@ -89,6 +88,18 @@ public class MainView {
         panelGridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
         panelGridBag.setConstraints(numOfPlayers, panelGridBagConstraints);
         controlPanel.add(numOfPlayers);
+        
+        panelGridBagConstraints.weightx = 1.0;
+        panelGridBagConstraints.gridwidth = GridBagConstraints.RELATIVE;
+        panelGridBag.setConstraints(numberOfPlayersSelectionLabel,
+                                        panelGridBagConstraints);
+        //playerLabel.setBorder(new LineBorder(Color.BLACK, 2));
+        controlPanel.add(numberOfPlayersSelectionLabel);
+        // Set properties for rollDiceBtn
+        panelGridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+        panelGridBag.setConstraints(selectNumberOfPlayersBtn,
+                                        panelGridBagConstraints);
+        controlPanel.add(selectNumberOfPlayersBtn);
 
         panelGridBagConstraints.weightx = 1.0;
         panelGridBagConstraints.gridwidth = GridBagConstraints.RELATIVE;
@@ -140,33 +151,41 @@ public class MainView {
     
     public JButton getRollDiceBtn(){
         return this.rollDiceButton;
-    }
+    }// end getRollDiceBtn
     
     public JTextArea getResultDisplayArea(){
         return this.resultDisplayArea;
-    }
+    }// end getResultDisplayArea
     
     public JLabel getPlayerLabel(){
         return this.playerLabel;
-    }
+    }// end getPlayerLabel
     
     public JLabel getRoundLabel(){
         return this.roundLabel;
-    }
+    }// end getRoundLabel
     
     public JComboBox getChoicesScoringComboBox(){
         return this.categories;
-    }
+    }// end getChoicesScoringComboBox
     
     public JButton getChooseChoicesButton(){
         return this.selectChoice;
-    }
+    }// end getChooseChoicesButton
     
     public JLabel getRoundScoreLabel(){
         return this.roundScoreLabel;
-    }
+    }// end getRoundScoreLabel
     
     public JLabel getTotalScoreLabel(){
         return this.totalScoreLabel;
+    }// end getTotalScoreLabel
+
+    public JComboBox<Integer> getNumOfPlayers() {
+        return numOfPlayers;
+    }
+
+    public JButton getSelectNumberOfPlayersBtn() {
+        return selectNumberOfPlayersBtn;
     }
 }// end main class

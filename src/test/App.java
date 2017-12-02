@@ -6,7 +6,7 @@
 package test;
 
 import controller.MainController;
-import models.Round;
+import models.GamePlay;
 import views.MainView;
 
 /**
@@ -16,7 +16,7 @@ import views.MainView;
 public class App {
     public static void main(String[] args){
         MainView newView = new MainView();
-        Round newRound = new Round("Player 1");
+        GamePlay newRound = new GamePlay("Player 1");
         MainController newController = new MainController(newView, newRound);
         newController.initController();
     }// end main

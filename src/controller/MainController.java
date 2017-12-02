@@ -6,12 +6,9 @@
 package controller;
 
 import java.awt.event.ActionEvent;
-import java.util.concurrent.TimeUnit;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import models.Dices;
-import models.Round;
+import models.GamePlay;
 import views.MainView;
 
 /**
@@ -20,19 +17,24 @@ import views.MainView;
  */
 public class MainController {
     MainView mainView;
-    Round newRound;
+    GamePlay newRound;
     
     
     
     
-    public MainController(MainView v, Round r){
+    public MainController(MainView v, GamePlay r){
         mainView = v;
         newRound = r;
     }// end constructor
     
     public void initController() {
+        this.mainView.getRollDiceBtn().setEnabled(false);
+        this.mainView.getChooseChoicesButton().setEnabled(false);
         
-        this.runRound();
+        JButton startGameBtn = this.mainView.getSelectNumberOfPlayersBtn();
+        startGameBtn.addActionListener((ActionEvent e) -> 
+                                      startGame());
+        
         // Roll Dices and update the categories accordingly
         JButton rollDiceBtn = this.mainView.getRollDiceBtn();
         rollDiceBtn.addActionListener((ActionEvent e) -> 
@@ -46,6 +48,18 @@ public class MainController {
     private void printName(){
         System.out.println("Hello World");
     }// end printName
+    
+    private void startGame(){
+        this.mainView.getRollDiceBtn().setEnabled(true);
+        // To Do : Add Player Logic Here
+        Integer numPlayers;
+        numPlayers = (Integer) this.mainView.getNumOfPlayers().getSelectedItem();
+        this.newRound.setPlayers(numPlayers);
+        System.out.println("Control Reaches Here");
+        this.mainView.getSelectNumberOfPlayersBtn().setEnabled(false);
+        this.runRound();
+        
+    }// end start Game
     
     private void showRollDicesResult(JButton t){
         if(!this.newRound.moreRollsPossible()) t.setEnabled(false);
@@ -83,8 +97,13 @@ public class MainController {
             );
         this.mainView.getRollDiceBtn().setEnabled(false);
 //        this.newRound.getPlayer().incrementRoundNumber();
-        if(this.newRound.getPlayer().hasMoreRoundsToPlay()) 
-                            this.runRound();
+        if(this.newRound.getPlayer().hasMoreRoundsToPlay() || 
+                this.newRound.hasMorePlayersToPlay()){
+            this.newRound.changePlayer();
+            this.runRound();
+        } // end if
+ 
+            
     }// end scoreAndShowResults
     
     private void runRound(){

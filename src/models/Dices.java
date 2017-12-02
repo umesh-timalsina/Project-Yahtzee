@@ -29,7 +29,7 @@ public class Dices {
         for(int i = 0; i <  this.diceSet.size(); i++){
             this.rollResult[i] = diceSet.get(i).nextInt(6)+1;
         }// end for
-        System.out.println(this.getRollResultString());
+        //System.out.println(this.getRollResultString());
     }// end roll
     
     public Integer [] getRollResult(){
