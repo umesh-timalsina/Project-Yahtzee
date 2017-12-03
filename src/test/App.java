@@ -16,7 +16,7 @@ import views.MainView;
 public class App {
     public static void main(String[] args){
         MainView newView = new MainView();
-        GamePlay newRound = new GamePlay("Player 1");
+        GamePlay newRound = new GamePlay();
         MainController newController = new MainController(newView, newRound);
         newController.initController();
     }// end main

@@ -20,7 +20,6 @@ public class MainView {
     private JPanel controlPanel;
     private JLabel roundScoreLabel;
     private JLabel totalScoreLabel;
-    private JLabel emptyLabel;
     private JButton rollDiceButton;
     private JTextArea resultDisplayArea;
     private JComboBox<String> categories;
@@ -57,7 +56,6 @@ public class MainView {
         playerLabel = new JLabel("Player");
         roundLabel = new JLabel("Round");
         roundScoreLabel = new JLabel("Round Score");
-        emptyLabel = new JLabel("");
         totalScoreLabel = new JLabel("Total Score");
         rollDiceButton = new JButton("Roll Dices");
         resultDisplayArea = new JTextArea("1-1-1-1-1");

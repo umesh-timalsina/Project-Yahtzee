@@ -27,7 +27,7 @@ public class GamePlay {
     private Map<Integer, Integer> categoriesFrequency;
     private int numPlayers; // number of players
     
-    public GamePlay(String player_id){
+    public GamePlay(){
         //this.p = new Player(player_id);
         this.numRolls = 1;
         this.categoriesFrequency = new HashMap<>();
@@ -43,7 +43,10 @@ public class GamePlay {
     public String getDiceRollResult(){
         String temp = new String();
         for(int i = 0; i < this.result.length; i++){
-            temp = temp.concat(this.result[i].toString() + " - ");
+            if(i < this.result.length-1)
+                temp = temp.concat(this.result[i].toString() + " - ");
+            else
+                temp = temp.concat(this.result[i].toString());
         }
         return temp;
     }// end getDiceRollResult

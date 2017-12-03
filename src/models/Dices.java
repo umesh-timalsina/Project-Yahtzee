@@ -44,7 +44,12 @@ public class Dices {
     public String getRollResultString(){
         String temp = new String();
         for(int i = 0; i < this.rollResult.length; i++){
-            temp = temp.concat(this.rollResult[i].toString() + " - ");
+            if(i < this.rollResult.length-1){
+                temp = temp.concat(this.rollResult[i].toString() + " - ");
+            }// end if
+            else{
+                temp = temp.concat(this.rollResult[i].toString());
+            }
         }
         return temp;
     }// end getRollResultString
