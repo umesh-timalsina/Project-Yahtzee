@@ -15,8 +15,9 @@ import java.util.Map;
 import circularLinkedChain.CircularLinkedChain;
 
 /**
- *
- * @author tumesh
+ *A class that has a circular Linked chain of Players, keep track of their results,
+ * number of rolls, decide on the fit categories they can choose from, and finds the winner
+ * @author tumesh,Nour,Mahdi
  */
 public class GamePlay {
     private CircularLinkedChain<Player> players;
@@ -26,20 +27,29 @@ public class GamePlay {
     private int numRolls;
     private Map<Integer, Integer> categoriesFrequency;
     private int numPlayers; // number of players
-    
+    /**
+     *Default constructor that initialize the class variables 
+     */
     public GamePlay(){
         //this.p = new Player(player_id);
         this.numRolls = 1;
         this.categoriesFrequency = new HashMap<>();
     }// end constructor
-    
+    /**
+     * Call the player's rollDice method,increment the variable numRolls to
+     * keep track of the number of time the dices were rolled for a certain round,
+     * get the results of rolling, and call the method populateCategoriesFrequency()
+     */
     public void rollDices(){
         this.p.rollDice();
         this.numRolls++;
         this.result = this.p.getResults();
         this.populateCategoriesFrequency();
     }// end rollDices
-    
+    /**
+     * Concatenate the results of rolling into a String
+     * @return String represent the results of rolling the dices
+     */
     public String getDiceRollResult(){
         String temp = new String();
         for(int i = 0; i < this.result.length; i++){
@@ -50,19 +60,33 @@ public class GamePlay {
         }
         return temp;
     }// end getDiceRollResult
-    
+     /**
+     * Check if the player is allowed to roll the dices again
+     * @return True if rolling again is possible, False otherwise
+     */
     public boolean moreRollsPossible(){
         return this.numRolls < MAX_ROLLS;
     }// end moreRollsPossible
-    
+    /**
+     * Get the current Player's ID 
+     * @return String, the Players ID as a String
+     */
     public String getPlayerID(){
         return this.p.getPlayerID();
     }// end getPlayerID
-    
+    /**
+     * Get the Round ID
+     * @return String,the roundNumber as a String
+     */
     public String getRoundID(){
         return this.p.getRoundID();
     }// end getRoundID
-    
+    /**
+     * Analyze the results, by calling the findFitCategories method, then 
+     * iterating through the choicesAlreadyScored Map to remove any categories that
+     * were previously scored
+     * @return ArrayList<String> the available categories that a player can choose from 
+     */
     public ArrayList<String> analyzeResults(){
         ArrayList<String> resultAnalyzed = findFitCategories(this.result);
         Iterator resultAnalyzedIterator = resultAnalyzed.iterator();
@@ -74,7 +98,11 @@ public class GamePlay {
         }// end while
         return resultAnalyzed;
     }// end analyzeResults
-    
+     /**
+     * Create a temporary instance of the Array results as a LinkedList,
+     * to check for the frequency of each number(from 1 to 6),
+     * then store that into the HashMap categoriesFrequency
+     */
     private void populateCategoriesFrequency(){
         LinkedList<Integer> temp = 
                         new LinkedList<>(Arrays.asList(result));
@@ -84,7 +112,12 @@ public class GamePlay {
             this.categoriesFrequency.put(i, freq);
         }// end for
     }// end populateCategoriesFrequency
-    
+    /**
+     * Find the fit categories for the sample of rolled dices, by checking 
+     * if each category is applicable or not, then storing the fit ones in 
+     * the ArrayList  resultAnalyzed
+     * @return ArrayList<String>,the fit categories.
+     */
     private ArrayList<String> findFitCategories(Integer [] res){
         ArrayList<String> resultAnalyzed = new ArrayList<>();
         
@@ -105,11 +138,18 @@ public class GamePlay {
        
         return resultAnalyzed;
     }// end findFitCategories
-    
+    /**
+     * Get the Player
+     * @return Player, the current player
+     */
     public Player getPlayer(){
         return this.p;
     }// end getPlayer
-    
+    /**
+     * Check if the Yahtzee category is applicable or not for the sample of rolled dices
+     * can only be scored if the dice show five of the same number
+     * @return True if applicable, False otherwise
+     */
     private boolean isYahtzee(Integer [] arr){
         boolean resultBool = true;
         Integer temp = arr[0];
@@ -121,7 +161,12 @@ public class GamePlay {
         }// end for
         return resultBool;
     }// end isYahtzee
-    
+    /**
+     * Check if the FullHouse category is applicable or not for the sample of rolled dices
+     * can only be scored if the dice show three of one number and two of another, therfore 
+     * the categoriesFrequency must contain the values 2 and 3
+     * @return True if applicable, False otherwise
+     */
     private boolean isFullHouse(){
         boolean countTwo = false, countThree = false;
         for(Integer anElement : this.categoriesFrequency.values()){
@@ -130,7 +175,11 @@ public class GamePlay {
         }// end if
         return (countTwo && countThree);
     }// end isFullHouse
-    
+    /**
+     * Check if the LargeStraight category is applicable or not for the sample of rolled dices
+     * can only be scored if the dice show any sequence of five numbers.
+     * @return True if applicable, False otherwise
+     */
     private boolean isLargeStraight(){
         int count = 0;
         boolean isLargeStraight = false;
@@ -142,7 +191,11 @@ public class GamePlay {
         if(count == 4) isLargeStraight = true;
         return isLargeStraight;
     }// end isLargeStraight
-    
+    /**
+     * Check if the SmallStraight category is applicable or not for the sample of rolled dices
+     * can only be scored if the dice show any sequence of four numbers.
+     * @return True if applicable, False otherwise
+     */
     private boolean isSmallStraight(){
         boolean isSmallStraight = false;
         int count = 0;
@@ -154,7 +207,11 @@ public class GamePlay {
        //System.out.println(isSmallStraight);
         return isSmallStraight;
     }// end isSmallStraight
-    
+    /**
+     * Check if the ThreeOfAKind category is applicable or not for the sample of rolled dices
+     * can only be scored if the dice include three or more of the same number
+     * @return True if applicable, False otherwise
+     */
     private boolean isThreeOfAKind() {
         boolean isThreeOfAKind = false;
         for(Integer frequency : this.categoriesFrequency.values()){
@@ -162,7 +219,11 @@ public class GamePlay {
         }// end if
         return isThreeOfAKind;
     }// end isThreeOfAKind
-    
+    /**
+     * Check if the FourOfAKind category is applicable or not for the sample of rolled dices
+     * can only be scored if the dice include four or more of the same number
+     * @return True if applicable, False otherwise
+     */
     private boolean isFourOfAKind(){
         boolean isFourOfAKind = false;
         for(Integer frequency : this.categoriesFrequency.values()){
@@ -170,35 +231,65 @@ public class GamePlay {
         }// end if
         return isFourOfAKind;
     }// end isFourOfAKind
-    
+    /**
+     * Check if the UpperOne category is applicable or not for the sample of rolled dices
+     * can be scored if the dice include at least one 1
+     * @return True if applicable, False otherwise
+     */
     private boolean isUpperOne(){
         return (this.categoriesFrequency.get(1) > 0);
     }// end isUpperOne
-
+     /**
+     * Check if the UpperTwo category is applicable or not for the sample of rolled dices
+     * can be scored if the dice include at least one 2
+     * @return True if applicable, False otherwise
+     */
     private boolean isUpperTwo(){
         return (this.categoriesFrequency.get(2) > 0);
     }// end isUpperTwo
-    
+    /**
+     * Check if the UpperThree category is applicable or not for the sample of rolled dices
+     * can be scored if the dice include at least one 3
+     * @return True if applicable, False otherwise
+     */
     private boolean isUpperThree(){
         return (this.categoriesFrequency.get(3) > 0);
     }// end isUpperThree
-    
+     /**
+     * Check if the UpperFour category is applicable or not for the sample of rolled dices
+     * can be scored if the dice include at least one 4
+     * @return True if applicable, False otherwise
+     */
     private boolean isUpperFour(){
         return (this.categoriesFrequency.get(4) > 0);
     }// end isUpperFour
-    
+     /**
+     * Check if the UpperFive category is applicable or not for the sample of rolled dices
+     * can be scored if the dice include at least one 5
+     * @return True if applicable, False otherwise
+     */
     private boolean isUpperFive(){
         return (this.categoriesFrequency.get(5) > 0);
     }// end isUpperFive
-    
+    /**
+     * Check if the UpperSix category is applicable or not for the sample of rolled dices
+     * can be scored if the dice include at least one 6
+     * @return True if applicable, False otherwise
+     */
     private boolean isUpperSix(){
         return (this.categoriesFrequency.get(6) > 0);
     }// end isUpperSix
-    
+    /**
+     * Check if the Chance category is applicable for the rolled dices
+     * @return True
+     */
     private boolean isChance(){
         return true;
     }// end isChance
-    
+    /**
+     *Get the score of the chosen category
+     * @param choice is the score choice of the user
+     */
     public void scoreRound(String choice){
         switch (choice) {
             case "Chance":
@@ -256,10 +347,17 @@ public class GamePlay {
             this.p.getChoicesAlreadyScored().put(choice, Boolean.TRUE);
         }// end if
     }// end scoreRound
-    
+    /**
+     *Set the numRolls variable
+     * @param numRollsIn, th current number of rolls for the round
+     */
     public void setNumberOfRolls(int numRollsIn){
         this.numRolls = numRollsIn;
     }
+    /*
+    *Sum the values of all five dices stored in results
+    @return Integer,the sum of all dices values
+    */
     private int sum(){
         int sum = 0;
         for(int i = 0; i < this.result.length; i++){
@@ -267,16 +365,25 @@ public class GamePlay {
         }// end for
         return sum;
     }
-
+     /**
+     * Get the number of Players
+     * @return Integer, the number of Players
+     */
     public int getNumPlayers() {
         return numPlayers;
     }
-
+    /**
+     *Set the number of players and call the initializePlayer method
+     * @param numPlayers, the selected number of players
+     */
     public void setPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
         initializePlayers();
     }
-    
+    /**
+     *Create a new CircularLinkedChain of Players, of length numPlayers
+     * 
+     */
     private void initializePlayers(){
         this.players = new CircularLinkedChain<>();
         for(int i = this.numPlayers; i >= 1; i--){
@@ -284,15 +391,24 @@ public class GamePlay {
         }// end for
         this.p = players.getNext();
     }// end initializePlayers
-    
+     /**
+     * Get the next  player in the chain
+     */
     public void changePlayer(){
         this.p = players.getNext();
     }// end changePlayer
-    
+     /**
+     * Check if there are more players to play, by checking if the cycle is completed or not
+     * @return True if cycle is completed, False otherwise
+     */
     public boolean hasMorePlayersToPlay(){
         return this.players.isIncompleteCycle();
     }// end hasMorePlayersToPlay
-    
+    /**
+     *Find the winner by iterating through the chain of players and finding 
+     * the one with the highest score
+     * @return Player with the highest score
+     */
     public Player findWinner(){
         Player winner = this.players.getNext();
         while(this.players.isIncompleteCycle()){
