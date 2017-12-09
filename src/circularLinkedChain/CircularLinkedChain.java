@@ -5,9 +5,10 @@
  */
 package circularLinkedChain;
 
-/**
- *
- * @author SIU854422010
+/**A class of Circular linked nodes, that allow for detecting if 
+ * a cycle is completed, add an entry to the chain,and get the next object.
+ * @author Umesh,Nour,Mahdi
+ * @param <T> generic data type
  */
 public class CircularLinkedChain<T> implements CircularLinkedInterface<T>{
 
@@ -15,8 +16,17 @@ public class CircularLinkedChain<T> implements CircularLinkedInterface<T>{
     private Node lastNode;
     private Node currentNode;
     
+    /**
+     *Default constructor
+     */
     public CircularLinkedChain(){
     }
+
+    /**
+     * Adds a new entry to this chain
+     * @param anEntry the object to be added as a new entry 
+     * @return true if the addition is successful, or false if not 
+     */
     @Override
     public boolean add(T anEntry) {
         Node newNode = new Node(anEntry);
@@ -30,6 +40,10 @@ public class CircularLinkedChain<T> implements CircularLinkedInterface<T>{
         return true;
     }// end add
    
+    /**
+     * Get the next node in the chain
+     * @return T the next Object 
+     */
     @Override
     public T getNext(){
         T data = null;
@@ -40,10 +54,17 @@ public class CircularLinkedChain<T> implements CircularLinkedInterface<T>{
         return data;
     }// end getNext
     
+    /**
+     * A cycle is completed when the currentNode equals the firstNode
+     * @return boolean True if completed, false otherwise
+     */
     public boolean isIncompleteCycle(){
         return currentNode.getNextNode() != this.firstNode;
     }
     
+    /**
+     *Print the data of all nodes in the chain
+     */
     public void printList(){
         Node currentNode = this.firstNode;
         do{
@@ -53,9 +74,11 @@ public class CircularLinkedChain<T> implements CircularLinkedInterface<T>{
         // end while
     }// end printList
     
+    /*Private inner class of Node
+    */
     private class Node{
-        private T data;
-        private Node nextNode;
+        private T data; // entry
+        private Node nextNode;// link to next Node
         
         public Node(){
             this(null, null);
