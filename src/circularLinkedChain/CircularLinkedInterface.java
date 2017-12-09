@@ -7,9 +7,18 @@ package circularLinkedChain;
 
 /**
  *
- * @author SIU854422010
+ * @author Umesh,Nour,Mahdi
  */
 public interface CircularLinkedInterface<T> {
+    /**
+     * Adds a new entry to this chain
+     * @param anEntry the object to be added as a new entry 
+     * @return true if the addition is successful, or false if not 
+     */
     public boolean add(T anEntry);
+    /**
+     * Get the next nod in the chain
+     * @return T the next Object 
+     */
     public T getNext();
 }
