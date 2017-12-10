@@ -20,7 +20,7 @@ public class Player {
     private int score;
     private HashSet<String> choicesScored;
     private int roundNumber;
-    static final int MAX_ROUNDS = 4; 
+    static final int MAX_ROUNDS = 13; 
     private Integer [] results;
     private String player_id;
     private int yahtzeeCount;
